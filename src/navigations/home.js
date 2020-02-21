@@ -10,12 +10,33 @@ import {
   Title,
   Item,
   Input,
-  View,
 } from 'native-base';
-import {StyleSheet, Text, ScrollView, StatusBar} from 'react-native';
+import {StyleSheet, StatusBar, FlatList, Text, Image, View} from 'react-native';
 
 const home = () => {
   const [search, setSearch] = useState(false);
+  const [dataSource, setDataSource] = useState([
+    {
+      id: 1,
+      src: 'http://placehold.it/200x200?text=1',
+    },
+    {
+      id: 2,
+      src: 'http://placehold.it/200x200?text=2',
+    },
+    {
+      id: 3,
+      src: 'http://placehold.it/200x200?text=3',
+    },
+    {
+      id: 4,
+      src: 'http://placehold.it/200x200?text=4',
+    },
+    {
+      id: 5,
+      src: 'http://placehold.it/200x200?text=5',
+    },
+  ]);
   const changeSearch = () => {
     const searchVal = search;
     setSearch(!searchVal);
@@ -24,6 +45,13 @@ const home = () => {
   return (
     <>
       <StatusBar backgroundColor="#c56000" barStyle="light-content" />
+      <Image
+        source={{
+          uri:
+            'https://raw.githubusercontent.com/AboutReact/sampleresource/master/sample_img.png',
+        }}
+        style={{width: 400, height: 400, margin: 16}}
+      />
       <Container>
         {search ? (
           <View style={[styles.backHeader, styles.row]}>
@@ -62,9 +90,27 @@ const home = () => {
           </Header>
         )}
 
-        <ScrollView>
-          <Text>cek</Text>
-        </ScrollView>
+        <View style={styles.MainContainer}>
+          <FlatList
+            // data={dataSource}
+            data={[
+              {
+                id: 5,
+                src:
+                  'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg',
+              },
+            ]}
+            renderItem={({item}) => (
+              <View style={styles.flatListItem}>
+                <Text>{item.id}</Text>
+                <Image style={styles.imageThumbnail} source={{uri: item.src}} />
+              </View>
+            )}
+            //Setting the number of column
+            numColumns={3}
+            keyExtractor={(item, index) => index}
+          />
+        </View>
       </Container>
     </>
   );
@@ -81,6 +127,19 @@ const styles = StyleSheet.create({
   row: {flexDirection: 'row'},
   white: {color: '#fff'},
   menu: {color: '#fff', paddingLeft: 3, paddingTop: 11},
+  MainContainer: {
+    justifyContent: 'center',
+    flex: 1,
+    paddingTop: 5,
+  },
+
+  imageThumbnail: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 100,
+    width: 100,
+  },
+  flatListItem: {flex: 1, flexDirection: 'column', margin: 1},
 });
 
 export default home;
