@@ -45,13 +45,6 @@ const home = () => {
   return (
     <>
       <StatusBar backgroundColor="#c56000" barStyle="light-content" />
-      <Image
-        source={{
-          uri:
-            'https://raw.githubusercontent.com/AboutReact/sampleresource/master/sample_img.png',
-        }}
-        style={{width: 400, height: 400, margin: 16}}
-      />
       <Container>
         {search ? (
           <View style={[styles.backHeader, styles.row]}>
@@ -92,22 +85,15 @@ const home = () => {
 
         <View style={styles.MainContainer}>
           <FlatList
-            // data={dataSource}
-            data={[
-              {
-                id: 5,
-                src:
-                  'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg',
-              },
-            ]}
+            columnWrapperStyle={styles.wrap}
+            data={dataSource}
             renderItem={({item}) => (
               <View style={styles.flatListItem}>
-                <Text>{item.id}</Text>
                 <Image style={styles.imageThumbnail} source={{uri: item.src}} />
               </View>
             )}
             //Setting the number of column
-            numColumns={3}
+            numColumns={4}
             keyExtractor={(item, index) => index}
           />
         </View>
@@ -129,6 +115,7 @@ const styles = StyleSheet.create({
   menu: {color: '#fff', paddingLeft: 3, paddingTop: 11},
   MainContainer: {
     justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
     paddingTop: 5,
   },
@@ -136,10 +123,16 @@ const styles = StyleSheet.create({
   imageThumbnail: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 100,
-    width: 100,
+    height: 200,
+    width: 160,
   },
-  flatListItem: {flex: 1, flexDirection: 'column', margin: 1},
+  flatListItem: {flexDirection: 'column', margin: 3},
+  wrap: {
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
 });
 
 export default home;
