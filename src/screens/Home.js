@@ -35,8 +35,17 @@ const home = ({navigation}) => {
       .get(`https://api.jikan.moe/v3/season/2020/winter`)
       .then(res => {
         const results = res.data.anime.filter(result => {
-          return result.r18 === false;
+          const month = result.airing_start
+            ? result.airing_start.split('-')[1]
+            : null;
+          return (
+            result.r18 === false &&
+            (month === '01' || month === '02' || month === '03')
+          );
         });
+        // results.sort((a, b) => {
+        //   return a - b;
+        // });
         // console.log(res.data.anime);
         // setDataSource(res.data.anime);
         console.log(results.length);
@@ -266,7 +275,7 @@ const home = ({navigation}) => {
                 </TouchableWithoutFeedback>
               )}
               //Setting the number of column
-              numColumns={10}
+              numColumns={100}
               keyExtractor={(item, index) => index}
             />
           </View>
