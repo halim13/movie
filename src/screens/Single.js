@@ -2,26 +2,39 @@ import React, {useState, useEffect} from 'react';
 import {Text, View, ActivityIndicator, ScrollView, Image} from 'react-native';
 import {Button, Item, Title} from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import axios from 'axios';
+import {useSelector, useDispatch} from 'react-redux';
 
 import homeStyles from './HomeStyle';
 import styles from './SingleStyle';
+import {fetchSingleData, clearSingleData} from '../public/redux/action/animes';
 
 const Single = ({route, navigation}) => {
   const [details, setDetails] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [id, setId] = useState(route.params?.id);
+  const anime = useSelector(state => state.singleAnime);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const id = route.params?.id;
     if (id) {
-      axios
-        .get(`https://api.jikan.moe/v3/anime/${id}/`)
-        .then(res => {
-          setDetails(res.data);
-        })
-        .catch(err => {
-          alert(err);
-        });
+      detailAnime();
     }
+    // return () => cleanUp();
   }, []);
+
+  const cleanUp = () => {
+    // alert('clean');
+    setDetails(null);
+    setId(null);
+    // dispatch(clearSingleData());
+  };
+  const detailAnime = () => {
+    // alert(id);
+    setLoading(true);
+    dispatch(fetchSingleData(id));
+    anime ? setDetails(anime.items) : null;
+    setLoading(false);
+  };
   const formatDate = date => {
     var monthNames = [
       'January',
@@ -47,7 +60,7 @@ const Single = ({route, navigation}) => {
 
   return (
     <>
-      {!details ? (
+      {loading ? (
         <View style={homeStyles.allCenter}>
           <ActivityIndicator size={50} color="#c56000" />
         </View>
